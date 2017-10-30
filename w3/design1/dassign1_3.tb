@@ -1,0 +1,41 @@
+//--------------------------------------------------------------------
+//      Timescale
+//      Means that if you do #1 in the initial block of your
+//      testbench, time is advanced by 1ns instead of 1ps
+//--------------------------------------------------------------------
+`timescale 1ns / 1ps
+
+//--------------------------------------------------------------------
+//      Design Assign #1, Problem #1 Testbench.
+//--------------------------------------------------------------------
+module dassign1_3_tb();
+
+//----------------------------------------------------------------
+//      Signal Declarations
+//----------------------------------------------------------------
+reg [4:0] letter;
+wire [6:0] display;
+wire g,f,e,d,c,b,a;
+
+//----------------------------------------------------------------
+//      Instantiate modules Module
+//----------------------------------------------------------------
+display_rom display_rom_1(letter, display);
+display_mux display_mux_1(letter, g,f,e,d,c,b,a);
+
+//----------------------------------------------------------------
+//      Test Stimulus
+//----------------------------------------------------------------
+initial begin
+
+    $dumpfile("dassign1_3_timing.vcd");
+    $dumpvars;
+    
+    letter = 5'b00111;
+    #2
+    $display("%b", display);
+    $display("%b%b%b%b%b%b%b", g,f,e,d,c,b,a);
+
+
+end
+endmodule

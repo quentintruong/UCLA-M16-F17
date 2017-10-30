@@ -1,0 +1,252 @@
+//--------------------------------------------------------------------
+//      Timescale
+//      Means that if you do #1 in the initial block of your
+//      testbench, time is advanced by 1ns instead of 1ps
+//--------------------------------------------------------------------
+`timescale 1ns / 1ps
+
+//--------------------------------------------------------------------
+//      Design Assign #1, Problem #1 Testbench.
+//--------------------------------------------------------------------
+module dassign1_2_tb();
+
+//----------------------------------------------------------------
+//      Signal Declarations
+//----------------------------------------------------------------
+
+reg [1:0] fcmp2_1_a, fcmp2_1_b;
+reg fcmp2_1_e;
+wire fcmp2_1_out;
+
+reg [7:0] fcmp8_1_a, fcmp8_1_b;
+reg fcmp8_1_e;
+wire fcmp8_1_out;
+
+reg [7:0] mux8_1_a, mux8_1_b;
+reg mux8_1_select;
+wire [7:0] mux8_1_out;
+
+reg [4:0] mux5_1_a, mux5_1_b;
+reg mux5_1_select;
+wire [4:0] mux5_1_out;
+
+reg   [7:0]     mam_1_val1, mam_1_val2;
+reg   [4:0]     mam_1_label1, mam_1_label2;
+wire  [7:0]     mam_1_outv;
+wire  [4:0]     mam_1_outl;
+
+reg   [7:0]     maxindex_1_a, maxindex_1_b, maxindex_1_c, maxindex_1_d, maxindex_1_e, maxindex_1_f, maxindex_1_g, maxindex_1_h, maxindex_1_i, maxindex_1_j, maxindex_1_k, maxindex_1_l, maxindex_1_m, maxindex_1_n, maxindex_1_o, maxindex_1_p, maxindex_1_q, maxindex_1_r, maxindex_1_s, maxindex_1_t, maxindex_1_u, maxindex_1_v, maxindex_1_w, maxindex_1_x, maxindex_1_y, maxindex_1_z;
+wire  [4:0]     maxindex_1_outl;
+
+integer     i1, i2;
+reg         res;
+reg [7:0]   res8;
+reg [4:0]   res5;
+
+//----------------------------------------------------------------
+//      Instantiate modules Module
+//----------------------------------------------------------------
+fcmp2       fcmp2_1(fcmp2_1_a, fcmp2_1_b, fcmp2_1_e, fcmp2_1_out);
+fcmp8       fcmp8_1(fcmp8_1_a, fcmp8_1_b, fcmp8_1_e, fcmp8_1_out);
+mux8        mux8_1(mux8_1_a, mux8_1_b, mux8_1_select, mux8_1_out);
+mux5        mux5_1(mux5_1_a, mux5_1_b, mux5_1_select, mux5_1_out);
+mam         mam_1(mam_1_val1, mam_1_label1, mam_1_val2, mam_1_label2, mam_1_outv, mam_1_outl);
+maxindex    maxindex_1(maxindex_1_a, maxindex_1_b, maxindex_1_c, maxindex_1_d, maxindex_1_e, maxindex_1_f, maxindex_1_g, maxindex_1_h, maxindex_1_i, maxindex_1_j, maxindex_1_k, maxindex_1_l, maxindex_1_m, maxindex_1_n, maxindex_1_o, maxindex_1_p, maxindex_1_q, maxindex_1_r, maxindex_1_s, maxindex_1_t, maxindex_1_u, maxindex_1_v, maxindex_1_w, maxindex_1_x, maxindex_1_y, maxindex_1_z, maxindex_1_outl);
+
+//----------------------------------------------------------------
+//      Test Stimulus
+//----------------------------------------------------------------
+initial begin
+
+    $dumpfile("dassign1_2_timing.vcd");
+    $dumpvars;
+
+
+//
+//TEST FCMP2
+//
+    for(i1 = 2'b0; i1 < 4; i1 = i1 + 1) begin
+        for(i2 = 2'b0; i2 < 4; i2 = i2 + 1) begin
+            fcmp2_1_a = i1[1:0];
+            fcmp2_1_b = i2[1:0];
+            fcmp2_1_e = 0;
+            
+            res = 0;
+            if (i1 < i2)
+                res = 1;
+            
+            #2
+            if (res !== fcmp2_1_out)
+                $display("fcmp2 ERROR: i1=%b i2=%b res=%b out=%b", i1[1:0], i2[1:0], res, fcmp2_1_out);
+        end
+    end
+    
+    for(i1 = 2'b0; i1 < 4; i1 = i1 + 1) begin
+        for(i2 = 2'b0; i2 < 4; i2 = i2 + 1) begin
+            fcmp2_1_a = i1[1:0];
+            fcmp2_1_b = i2[1:0];
+            fcmp2_1_e = 1;
+            
+            res = 0;
+            if (i1 <= i2)
+                res = 1;
+            
+            #2
+            if (res !== fcmp2_1_out)
+                $display("fcmp2 ERROR: i1=%b i2=%b res=%b out=%b", i1[1:0], i2[1:0], res, fcmp2_1_out);
+        end
+    end
+//
+//TEST FCMP2
+//
+
+
+//
+//TEST FCMP8
+//
+    for(i1 = 2'b0; i1 < 128; i1 = i1 + 1) begin
+        for(i2 = 2'b0; i2 < 128; i2 = i2 + 1) begin
+            fcmp8_1_a = i1[7:0];
+            fcmp8_1_b = i2[7:0];
+            fcmp8_1_e = 0;
+            
+            res = 0;
+            if (i1 < i2)
+                res = 1;
+            
+            #2
+            if (res !== fcmp8_1_out)
+                $display("fcmp8 ERROR: i1=%b i2=%b res=%b out=%b", i1[7:0], i2[7:0], res, fcmp8_1_out);
+        end
+    end
+    
+    for(i1 = 2'b0; i1 < 128; i1 = i1 + 1) begin
+        for(i2 = 2'b0; i2 < 128; i2 = i2 + 1) begin
+            fcmp8_1_a = i1[7:0];
+            fcmp8_1_b = i2[7:0];
+            fcmp8_1_e = 1;
+            
+            res = 0;
+            if (i1 <= i2)
+                res = 1;
+            
+            #2
+            if (res !== fcmp8_1_out)
+                $display("fcmp8 ERROR: i1=%b i2=%b res=%b out=%b", i1[7:0], i2[7:0], res, fcmp8_1_out);
+        end
+    end
+//
+//END TEST FCMP8
+//
+
+
+//
+//TEST MUX8
+//
+    mux8_1_a = 1;
+    mux8_1_b = 2;
+    mux8_1_select = 0;
+    #2
+    if (mux8_1_out !== 1)
+        $display("mux8 ERROR: i1=%b i2=%b out=%b", mux8_1_a, mux8_1_b, mux8_1_select);
+    mux8_1_select = 1;
+    #2
+    if (mux8_1_out !== 2)
+        $display("mux8 ERROR: i1=%b i2=%b out=%b", mux8_1_a, mux8_1_b, mux8_1_select);
+//
+//END TEST MUX8
+//
+    
+    
+    
+
+//
+//TEST MUX5
+//
+    mux5_1_a = 1;
+    mux5_1_b = 2;
+    mux5_1_select = 0;
+    #2
+    if (mux5_1_out !== 1)
+        $display("mux5 ERROR: i1=%b i2=%b out=%b", mux5_1_a, mux5_1_b, mux5_1_select);
+    mux5_1_select = 1;
+    #2
+    if (mux5_1_out !== 2)
+        $display("mux5 ERROR: i1=%b i2=%b out=%b", mux5_1_a, mux5_1_b, mux5_1_select);
+//
+//END TEST MUX5
+//
+
+
+
+    
+//
+//TEST MAM
+//
+    for(i1 = 2'b0; i1 < 128; i1 = i1 + 1) begin
+        for(i2 = 2'b0; i2 < 128; i2 = i2 + 1) begin
+            mam_1_val1 = i1[7:0];
+            mam_1_val2 = i2[7:0];
+            mam_1_label1 = $urandom;
+            mam_1_label2 = $urandom;
+            
+            res8 = i1[7:0];
+            res5 = mam_1_label1;
+            if (i1 <= i2) begin
+                res8 = i2[7:0];
+                res5 = mam_1_label2;
+            end
+            
+            #2
+            if (res8 !== mam_1_outv || res5 !== mam_1_outl)
+                $display("mam ERROR: i1=%b i2=%b res8=%b outvalue=%b res5=%b outlabel=%b", i1[7:0], i2[7:0], res8, mam_1_outv, res5, mam_1_outl);
+                
+        end
+    end
+//
+//END TEST MAM
+//
+
+
+
+//
+//TEST MAXINDEX
+//
+maxindex_1_a = 0;
+maxindex_1_b = 1;
+maxindex_1_c = 2;
+maxindex_1_d = 3;
+maxindex_1_e = 4;
+maxindex_1_f = 5;
+maxindex_1_g = 6;
+maxindex_1_h = 7;
+maxindex_1_i = 8;
+maxindex_1_j = 9;
+maxindex_1_k = 10;
+maxindex_1_l = 11;
+maxindex_1_m = 12;
+maxindex_1_n = 13;
+maxindex_1_o = 14;
+maxindex_1_p = 15;
+maxindex_1_q = 16;
+maxindex_1_r = 17;
+maxindex_1_s = 18;
+maxindex_1_t = 19;
+maxindex_1_u = 20;
+maxindex_1_v = 21;
+maxindex_1_w = 22;
+maxindex_1_x = 23;
+maxindex_1_y = 24;
+maxindex_1_z = 25;
+res5 = 25;
+#5
+if (maxindex_1_outl !== 25)
+    $display("%b", maxindex_1_outl);
+//
+//END TEST MAXINDEX
+//
+
+
+
+end
+endmodule
