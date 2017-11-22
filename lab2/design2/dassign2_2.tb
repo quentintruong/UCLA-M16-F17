@@ -1,0 +1,86 @@
+//--------------------------------------------------------------------
+//      Timescale
+//      Means that if you do #1 in the initial block of your
+//      testbench, time is advanced by 1ns instead of 1ps
+//--------------------------------------------------------------------
+`timescale 1ns / 1ps
+
+`include "constants2_2.vh"
+
+//--------------------------------------------------------------------
+//      Design Assign #2, Problem #2 Testbench.
+//--------------------------------------------------------------------
+module dassign2_2_tb();
+
+//----------------------------------------------------------------
+//      Signal Declarations
+//----------------------------------------------------------------
+
+wire clk;
+
+integer i;
+reg in;
+
+wire [7:0] out3, out2, out1, out0;
+wire done;
+
+wire [7:0] out;
+wire [7:0] pwidth;
+wire long;
+wire type;
+wire new;
+
+
+//----------------------------------------------------------------
+//      Instantiate modules 
+//----------------------------------------------------------------
+clock_gen  #(25)  clock_gen(clk);
+//pulse_width #(8)  pulse_width(clk, in, pwidth, long, type, new);
+//shift4 #(8) shift4(clk, in8, cmd, out3, out2, out1, out0);
+//control_fsm cf(clk, long, type, ccmd, done);
+deserializer d(clk, in, out3, out2, out1, out0, done);
+
+//----------------------------------------------------------------
+//      Test Stimulus
+//----------------------------------------------------------------
+initial begin
+    $dumpfile("timing2_2.vcd");
+    $dumpvars;
+    
+    in = 0;
+    
+    
+    for(i=8'b0; i<25; i=i+1) begin
+        @(posedge clk);
+        //$display("in=%0d, pwidth=%0d, long=%0d, type=%0d, new=%0d", in, pwidth, long, type, new);
+    
+    
+        $display("in=%0b, out3=%0b, out2=%0b, out1=%0b, out0=%0b, done=%0b", in, out3, out2, out1, out0, done);
+        
+        
+        
+        
+        //if (i == 1 || i == 4 || i == 5 || i == 6 || i == 7 || i == 8 || i == 9 || i == 12 || i == 15)
+        //if (i == 1 || i == 5 || i == 7 || i == 9 || i == 11 || i == 13 || i == 15 || i == 19 || i == 23)
+        if (i == 1 || i == 7 || i == 8 || i == 10 || i == 11 || i == 13 || i == 14 || i == 15 || i == 16 || i == 17 || i == 18 || i == 19) 
+            in = !in;
+        
+    end
+    
+    $finish;
+    
+end
+endmodule
+
+
+// Clock generation.  Period set via parameter:
+//   clock changes every half_period ticks
+//   full clock period = 2*half_period
+module clock_gen(clk);
+    parameter half_period = 25; 
+    output clk;
+    reg    clk;
+
+    initial clk = 1;
+    always #half_period clk = ~clk;
+endmodule

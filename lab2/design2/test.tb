@@ -1,0 +1,57 @@
+//--------------------------------------------------------------------
+//      Timescale
+//      Means that if you do #1 in the initial block of your
+//      testbench, time is advanced by 1ns instead of 1ps
+//--------------------------------------------------------------------
+`timescale 1ns / 1ps
+
+//--------------------------------------------------------------------
+//      Design assignment #2, problem #1 sample testbench.
+//--------------------------------------------------------------------
+module test_tb();
+
+//----------------------------------------------------------------
+//      Signal Declarations
+//----------------------------------------------------------------
+reg [7:0] shrR;
+reg [15:0] inA;
+reg [7:0] inB;
+reg [7:0] muxA, muxB;
+reg sel;
+
+wire [7:0] shr_out;
+wire [15:0] pp_out;
+wire done_out;
+wire [7:0] mux_out;
+
+//----------------------------------------------------------------
+//      Instantiate modules
+//----------------------------------------------------------------
+shr shr(shrR, shr_out);
+partial_product partial_product (inA, inB[0], pp_out);
+is_done is_done(inA, inB, done_out);
+mux8 mux8(muxA, muxB, sel, mux_out);
+
+//----------------------------------------------------------------
+//      Test Stimulus
+//----------------------------------------------------------------
+initial begin
+$dumpfile("test.vcd");
+$dumpvars;
+
+shrR = 3;
+inA = 21;
+inB = 1;
+muxA = 5;
+muxB = 10;
+sel = 0;
+
+#4
+$display("shr: %0d", shr_out);
+$display("pp: %0d", pp_out);
+$display("done: %0d", done_out);
+$display("mux: %0d", mux_out);
+
+$finish;
+end
+endmodule
